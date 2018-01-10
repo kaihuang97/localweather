@@ -1,0 +1,24 @@
+body {
+    text-align: center;
+    height: 100%;
+    display: grid;
+}
+
+.weather {
+    margin: auto;
+}
+
+.data {
+    height: 250px;
+    width: 250px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#temperature {
+    font-size: 100px;
+}
+
+.icon {
+    display: inline-block;
+}
