@@ -1,2 +1,2 @@
 # localweather
-Weather application using Dark Sky API and IP-API.
+Weather application using Dark Sky API, IP-API, and Unsplash API.
