@@ -15,6 +15,9 @@ $(document).ready(function () {
         var darkSkyAPI = darkSkyURL + location;
         $("#currentLocation").text(city + ", " + region);
         weather(darkSkyAPI);
+        var unsplashAPI = "https://api.unsplash.com/photos/random";
+        wallpaper(unsplashAPI);
+
     }
 
     function weather(darkSkyAPI) {
@@ -49,6 +52,29 @@ $(document).ready(function () {
             });
             skycons.add('skycon', icon);
             skycons.play();
+        }
+    }
+
+    function wallpaper(unsplashAPI) {
+        $.ajax({
+            headers: {
+                "Accept-Version": "v1",
+                "Authorization": "Client-ID 10c20ade5ab0257ce7ba5ad938efa572f6add11cec4f2ec4e45ecad170de8f53"
+            },
+            // using test 6084292b78479ead8972f469747ee02d056696a9f869ad5e4fcdaeddd7bd6ea7
+            type: "GET",
+            url: unsplashAPI,
+            data: {
+                count: 1,
+                query: "night"
+            },
+            success: getWallpaper
+        });
+
+        function getWallpaper(data) {
+            var image = data[0].urls.regular;
+            document.body.background = image;
+            console.log(data);
         }
     }
 });
