@@ -1,11 +1,12 @@
 $(document).ready(function () {
-
+    // wanted experience with api instead of using built-in geolocation
+    // ip-api for location using ip address
     $.ajax({
         type: "GET",
         url: "http://ip-api.com/json",
         success: location
     });
-
+    // feeds coordinates into dark sky api 
     function location(data) {
         // var darkSkyURL = "https://api.darksky.net/forecast/e5d936bd471e33d6600f3ec145250457/";
         var darkSkyURL = "https://api.darksky.net/forecast/c1c79c93374cb0e0b5e2439d84fd12f5/";
@@ -16,7 +17,7 @@ $(document).ready(function () {
         $("#currentLocation").text(city + ", " + region);
         weather(darkSkyAPI);
     }
-
+    // calls dark sky api
     function weather(darkSkyAPI) {
         $.ajax({
             type: "GET",
@@ -24,7 +25,7 @@ $(document).ready(function () {
             dataType: "jsonp",
             success: getTemp
         });
-
+        // finds the temperature and then uses icon parameter to communicate with skycons 
         function getTemp(data) {
             var temp = Math.round(data.currently.temperature);
             var icon = data.currently.icon;
@@ -32,35 +33,30 @@ $(document).ready(function () {
             console.log(summary);
             $("#temperature").text(temp + "°F");
             getSkyCons(icon, temp);
-            var unsplashAPI = "https://api.unsplash.com/photos/random";
-            wallpaper(unsplashAPI);
+            unsplash();
         }
-
+        // draws skycons according to the weather condition
         function getSkyCons(icon, temp) {
-            /*
-            var skycons = new Skycons({
-                "monochrome": false,
-                "colors": {
-                    "main": "#333333",
-                    "moon": "#78586F",
-                    "fog": "#78586F",
-                    "fogbank": "#B4ADA3",
-                    "cloud": "#B4ADA3",
-                    "snow": "#7B9EA8",
-                    "leaf": "#7B9EA8",
-                    "rain": "#7B9EA8",
-                    "sun": "#FF8C42"
-                }
-            });
-            skycons.add('skycon', icon);
-            */
             var skycons = new Skycons({
                 "color": "white"
             });
             skycons.add("skycon", icon);
             skycons.play();
         }
+        // unsplash API for random background according to weather condition
+        function unsplash() {
+            var unsplashAPI = "https://api.unsplash.com/photos/random";
+            var size = {
+                width: window.innerWidth || document.body.clientWidth,
+                height: window.innerHeight || document.body.clientHeight
+            }
+            var resolution = size.width + "x" + size.height;
 
+            console.log(size);
+            console.log(resolution);
+            wallpaper(unsplashAPI);
+        }
+        // searches unsplash using weather description summary from dark sky
         function wallpaper(unsplashAPI) {
             $.ajax({
                 headers: {
@@ -72,14 +68,18 @@ $(document).ready(function () {
                 url: unsplashAPI,
                 data: {
                     count: 1,
-                    query: summary
+                    query: summary + " landscape"
                 },
                 success: getWallpaper
             });
-
+            // finds image url and sets background
             function getWallpaper(data) {
+                console.log(data[0]);
                 var image = data[0].urls.regular;
-                document.body.background = image;
+                $("body").css({
+                    "background-image": "url(" + image + ")",
+                    "background-size": "100%"
+                });
             }
         }
     }
