@@ -7,22 +7,27 @@
     <script src="https://use.fontawesome.com/17f35c8460.js"></script>
     <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css'>
     <link rel="stylesheet" href="css/style.css">
-
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 </head>
 
-<body class="randombg" background="#">
+<body>
     <div class="weather">
         <div class="data">
             <div id="temperature"></div>
-            <div>
+            <div id="place">
                 <i class="fa fa-map-marker"></i>
                 <span id="currentLocation"></span>
             </div>
         </div>
         <div class="icon">
-            <canvas id="skycon" width="200px" height="200px"></canvas>
+            <canvas id="skycon" width="250px" height="300px"></canvas>
         </div>
     </div>
+
+    <footer>
+        <small>Photo by <a class="user" href="#"></a> // <a href="https://unsplash.com">Unsplash</a></small>
+    </footer>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src='https://rawgithub.com/darkskyapp/skycons/master/skycons.js'></script>
     <script src="js/index.js"></script>

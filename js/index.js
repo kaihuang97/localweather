@@ -8,8 +8,7 @@ $(document).ready(function () {
     });
     // feeds coordinates into dark sky api 
     function location(data) {
-        // var darkSkyURL = "https://api.darksky.net/forecast/e5d936bd471e33d6600f3ec145250457/";
-        var darkSkyURL = "https://api.darksky.net/forecast/c1c79c93374cb0e0b5e2439d84fd12f5/";
+        var darkSkyURL = "https://api.darksky.net/forecast/e5d936bd471e33d6600f3ec145250457/";
         var location = data.lat + "," + data.lon;
         var city = data.city;
         var region = data.region;
@@ -51,9 +50,8 @@ $(document).ready(function () {
                 height: window.innerHeight || document.body.clientHeight
             }
             var resolution = size.width + "x" + size.height;
-
-            console.log(size);
-            console.log(resolution);
+            //console.log(size);
+            //console.log(resolution);
             wallpaper(unsplashAPI);
         }
         // searches unsplash using weather description summary from dark sky
@@ -61,21 +59,23 @@ $(document).ready(function () {
             $.ajax({
                 headers: {
                     "Accept-Version": "v1",
-                    "Authorization": "Client-ID 10c20ade5ab0257ce7ba5ad938efa572f6add11cec4f2ec4e45ecad170de8f53"
+                    "Authorization": "Client-ID 6084292b78479ead8972f469747ee02d056696a9f869ad5e4fcdaeddd7bd6ea7"
                 },
-                // using test 6084292b78479ead8972f469747ee02d056696a9f869ad5e4fcdaeddd7bd6ea7
                 type: "GET",
                 url: unsplashAPI,
                 data: {
                     count: 1,
-                    query: summary + " landscape"
+                    query: summary + " nature"
                 },
                 success: getWallpaper
             });
-            // finds image url and sets background
+            // finds image and user url, sets background and gives credit
             function getWallpaper(data) {
                 console.log(data[0]);
                 var image = data[0].urls.regular;
+                var user = 'https://unsplash.com/' + data[0].user.username;
+                var name = data[0].user.name;
+                $(".user").attr("href", user).html(name);
                 $("body").css({
                     "background-image": "url(" + image + ")",
                     "background-size": "100%"
