@@ -6,7 +6,7 @@ body {
 }
 
 .weather {
-    width: 550px;
+    width: 600px;
     background: rgba(51, 51, 51, 0.3);
     vertical-align: middle;
     position: absolute;
@@ -33,6 +33,7 @@ body {
 .icon {
     display: inline-block;
     vertical-align: middle;
+    padding: 10px 5px 10px 5px;
 }
 
 footer {
