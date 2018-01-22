@@ -1,20 +1,45 @@
 $(document).ready(function () {
     // wanted experience with api instead of using built-in geolocation
-    // ip-api for location using ip address
+    // google geolocation api for location using ip address
+    var googleKey1 = "AIzaSyC25E0b1HLdvV6MPhL0WOXFyobHOq3Uch8";
     $.ajax({
-        type: "GET",
-        url: "http://ip-api.com/json",
+        type: "POST",
+        url: "https://www.googleapis.com/geolocation/v1/geolocate?key=" + googleKey1,
         success: location
     });
     // feeds coordinates into dark sky api 
     function location(data) {
+        //console.log(data.location);
         var darkSkyURL = "https://api.darksky.net/forecast/e5d936bd471e33d6600f3ec145250457/";
-        var location = data.lat + "," + data.lon;
-        var city = data.city;
-        var region = data.region;
+        var location = data.location.lat + "," + data.location.lng;
         var darkSkyAPI = darkSkyURL + location;
-        $("#currentLocation").text(city + ", " + region);
         weather(darkSkyAPI);
+        console.log(location);
+        var googleKey2 = "AIzaSyDXydEnzljplrQ2CZXgt3vMkUudHHIAOCY";
+        $.ajax({
+            type: "GET",
+            url: "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + location + "&key=" + googleKey2,
+            success: citystate
+        })
+        // obtains city and state information from google reverse geocoding request
+        function citystate(data) {
+            //console.log(data.results[0].address_components);
+            var results = data.results;
+            for (var i = 0; i < results[0].address_components.length; i++) {
+                var loc = results[0].address_components[i];
+                switch (loc.types[0]) {
+                    case 'locality':
+                        var city = loc.long_name;
+                        break;
+                    case 'administrative_area_level_1':
+                        var state = loc.short_name;
+                        break;
+                }
+            };
+            //console.log(city);
+            //console.log(state);
+            $("#currentLocation").text(city + ", " + state);
+        }
     }
     // calls dark sky api
     function weather(darkSkyAPI) {
@@ -71,6 +96,7 @@ $(document).ready(function () {
             });
             // finds image and user url, sets background and gives credit
             function getWallpaper(data) {
+                console.log(summary);
                 console.log(data[0]);
                 var image = data[0].urls.regular;
                 var user = 'https://unsplash.com/' + data[0].user.username;
